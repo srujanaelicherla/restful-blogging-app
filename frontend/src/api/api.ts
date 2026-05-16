@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://restful-blogging-app-backend.vercel.app/api'
+  baseURL: '/api'
 })
 
 export default api

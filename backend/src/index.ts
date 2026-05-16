@@ -8,30 +8,30 @@ dotenv.config()
 
 const app = express()
 
-// Update CORS to explicitly allow your frontend and handle preflight
+// Allow same-origin in prod, localhost in dev
 app.use(cors({
-  origin: 'https://restful-blogging-app-delta.vercel.app',
+  origin: process.env.NODE_ENV === 'production'
+    ? 'https://restful-blogging-app-delta.vercel.app'
+    : 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  credentials: true,
 }))
-
-// Intercept OPTIONS requests explicitly
-app.options('*', cors()) 
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.send('API Running')
 })
 
 app.use('/api/auth', authRoutes)
 app.use('/api/posts', postRoutes)
 
-const PORT = process.env.PORT || 3000
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
+}
 
 export default app
