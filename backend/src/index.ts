@@ -8,7 +8,17 @@ dotenv.config()
 
 const app = express()
 
-app.use(cors())
+// Update CORS to explicitly allow your frontend and handle preflight
+app.use(cors({
+  origin: 'https://restful-blogging-app-delta.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}))
+
+// Intercept OPTIONS requests explicitly
+app.options('*', cors()) 
+
 app.use(express.json())
 
 app.get('/', (req, res) => {
