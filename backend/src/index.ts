@@ -10,13 +10,13 @@ const app = express()
 
 app.use(
   cors({
-    origin: [
-      'https://restful-blogging-app-delta.vercel.app'
-    ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
   })
 )
+
+app.options('*', cors())
 
 app.use(express.json())
 
